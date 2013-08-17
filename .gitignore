@@ -1,0 +1,9 @@
+# Binary folders
+bin/
+obj/
+
+# VS local options file
+*.suo
+
+# StyleCop temp files
+StyleCop.cache
