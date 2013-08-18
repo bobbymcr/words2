@@ -151,6 +151,80 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
+        public void CompareTo_LongWords_ComparesCorrectly()
+        {
+            Word a01 = new Word("aaaaaaaaaaaaaaa");
+            Word a02 = new Word("aaaaaaaaaaaaaab");
+            Word a03 = new Word("aaaaaaaaaaaaabc");
+            Word a04 = new Word("aaaaaaaaaaaabcd");
+            Word a05 = new Word("aaaaaaaaaaabcde");
+            Word a06 = new Word("aaaaaaaaaabcdef");
+            Word a07 = new Word("aaaaaaaaabcdefg");
+            Word a08 = new Word("aaaaaaaabcdefgh");
+            Word a09 = new Word("aaaaaaabcdefghi");
+            Word a10 = new Word("aaaaaabcdefghij");
+            Word a11 = new Word("aaaaabcdefghijk");
+            Word a12 = new Word("aaaabcdefghijkl");
+            Word a13 = new Word("aaabcdefghijklm");
+            Word a14 = new Word("aabcdefghijklmn");
+            Word a15 = new Word("abcdefghijklmno");
+
+            Assert.True(a01.CompareTo(a01) == 0);
+            Assert.True(a01.CompareTo(a02) < 0);
+            Assert.True(a02.CompareTo(a01) > 0);
+            Assert.True(a02.CompareTo(a03) < 0);
+            Assert.True(a03.CompareTo(a02) > 0);
+            Assert.True(a03.CompareTo(a04) < 0);
+            Assert.True(a04.CompareTo(a03) > 0);
+            Assert.True(a04.CompareTo(a05) < 0);
+            Assert.True(a05.CompareTo(a04) > 0);
+            Assert.True(a05.CompareTo(a06) < 0);
+            Assert.True(a06.CompareTo(a05) > 0);
+            Assert.True(a06.CompareTo(a07) < 0);
+            Assert.True(a07.CompareTo(a06) > 0);
+            Assert.True(a07.CompareTo(a08) < 0);
+            Assert.True(a08.CompareTo(a07) > 0);
+            Assert.True(a08.CompareTo(a09) < 0);
+            Assert.True(a09.CompareTo(a08) > 0);
+            Assert.True(a09.CompareTo(a10) < 0);
+            Assert.True(a10.CompareTo(a09) > 0);
+            Assert.True(a10.CompareTo(a11) < 0);
+            Assert.True(a11.CompareTo(a10) > 0);
+            Assert.True(a11.CompareTo(a12) < 0);
+            Assert.True(a12.CompareTo(a11) > 0);
+            Assert.True(a12.CompareTo(a13) < 0);
+            Assert.True(a13.CompareTo(a12) > 0);
+            Assert.True(a13.CompareTo(a14) < 0);
+            Assert.True(a14.CompareTo(a13) > 0);
+            Assert.True(a14.CompareTo(a15) < 0);
+            Assert.True(a15.CompareTo(a14) > 0);
+            Assert.True(a15.CompareTo(a15) == 0);
+        }
+
+        [Fact]
+        public void CompareTo_LongWordsWithShortWords_ComparesCorrectly()
+        {
+            Word a01 = new Word("a");
+            Word b01 = new Word("b");
+            Word a15 = new Word("aaaaaaaaaaaaaaa");
+            Word b15 = new Word("bbbbbbbbbbbbbbb");
+            Word ba02 = new Word("ba");
+            Word bc02 = new Word("bc");
+
+            Assert.True(a01.CompareTo(b01) < 0);
+            Assert.True(b01.CompareTo(a01) > 0);
+            Assert.True(a01.CompareTo(a15) < 0);
+            Assert.True(a15.CompareTo(a01) > 0);
+            Assert.True(b01.CompareTo(a15) > 0);
+            Assert.True(a15.CompareTo(b01) < 0);
+            Assert.True(a15.CompareTo(ba02) < 0);
+            Assert.True(b15.CompareTo(ba02) > 0);
+            Assert.True(ba02.CompareTo(b15) < 0);
+            Assert.True(b15.CompareTo(bc02) < 0);
+            Assert.True(bc02.CompareTo(b15) > 0);
+        }
+
+        [Fact]
         public void GetHashCode_ReturnsValidCode()
         {
             Word a1 = new Word("abc");
