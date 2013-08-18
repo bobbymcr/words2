@@ -36,6 +36,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WordTrieTest.cs" />
     <Compile Include="WordLoaderTest.cs" />
     <Compile Include="WordTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
