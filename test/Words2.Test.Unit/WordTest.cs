@@ -109,6 +109,12 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
+        public void ForEach_FifteenChars_RunsForEachChar()
+        {
+            ForEachInnerTest("aBcdefghijklmno", new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O' });
+        }
+
+        [Fact]
         public void Equals_ComparesCorrectly()
         {
             Word a1 = new Word("abc");
@@ -237,6 +243,18 @@ namespace Words2.Test.Unit
 
             Assert.Equal(ca1, ca2);
             Assert.NotEqual(ca1, cb);
+        }
+
+        [Fact]
+        public void GetHashCode_LongWord_ReturnsValidCode()
+        {
+            Word a15 = new Word("aaaaaaaaaaaaaaa");
+            Word ab15 = new Word("aaaaaaaaaaaaaab");
+            
+            int ca15 = a15.GetHashCode();
+            int cab15 = ab15.GetHashCode();
+
+            Assert.NotEqual(ca15, cab15);
         }
 
         private static void ForEachInnerTest(string word, char[] expected)
