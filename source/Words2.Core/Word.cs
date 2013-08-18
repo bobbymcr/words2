@@ -35,6 +35,11 @@ namespace Words2
             return isEqual;
         }
 
+        public override int GetHashCode()
+        {
+            return this.word.GetHashCode();
+        }
+
         public bool Equals(Word other)
         {
             return this.word == other.word;

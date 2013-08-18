@@ -63,6 +63,21 @@ namespace Words2.Test.Unit
             Assert.False(a1.Equals("ABC"));
         }
 
+        [Fact]
+        public void GetHashCode_ReturnsValidCode()
+        {
+            Word a1 = new Word("abc");
+            Word a2 = new Word("abC");
+            Word b = new Word("bcd");
+
+            int ca1 = a1.GetHashCode();
+            int ca2 = a2.GetHashCode();
+            int cb = b.GetHashCode();
+
+            Assert.Equal(ca1, ca2);
+            Assert.NotEqual(ca1, cb);
+        }
+
         private static void ForEachInnerTest(string word, char[] expected)
         {
             Word w = new Word(word);
