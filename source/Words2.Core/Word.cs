@@ -7,33 +7,16 @@
 namespace Words2
 {
     using System;
+    using System.Collections;
+    using System.Collections.Generic;
 
-    public struct Word : IEquatable<Word>
+    public struct Word : IEquatable<Word>, IEnumerable<char>
     {
         private readonly string word;
 
         public Word(string word)
         {
             this.word = word.ToUpperInvariant();
-        }
-
-        public void ForEach(Action<char> action)
-        {
-            foreach (char c in this.word)
-            {
-                action(c);
-            }
-        }
-
-        public void ForEach(Func<char, bool> func)
-        {
-            foreach (char c in this.word)
-            {
-                if (!func(c))
-                {
-                    break;
-                }
-            }
         }
 
         public override string ToString()
@@ -55,6 +38,16 @@ namespace Words2
         public bool Equals(Word other)
         {
             return this.word == other.word;
+        }
+
+        public IEnumerator<char> GetEnumerator()
+        {
+            return this.word.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return this.GetEnumerator();
         }
     }
 }

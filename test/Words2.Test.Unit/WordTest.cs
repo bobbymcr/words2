@@ -47,23 +47,6 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
-        public void ForEach_ReturnFalse_BreaksOutOfLoop()
-        {
-            Word w = new Word("aabaa");
-            List<char> items = new List<char>();
-            int count = 0;
-            Func<char, bool> func = delegate(char c)
-            {
-                ++count;
-                return c == 'A';
-            };
-
-            w.ForEach(func);
-
-            Assert.Equal(3, count);
-        }
-
-        [Fact]
         public void Equals_ComparesCorrectly()
         {
             Word a1 = new Word("abc");
@@ -85,7 +68,10 @@ namespace Words2.Test.Unit
             Word w = new Word(word);
             List<char> items = new List<char>();
 
-            w.ForEach(c => items.Add(c));
+            foreach (char c in w)
+            {
+                items.Add(c);
+            }
 
             Assert.Equal(expected, items.ToArray());
         }
