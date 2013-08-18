@@ -307,6 +307,16 @@ namespace Words2.Test.Unit
             Assert.Equal('O', w[14]);
         }
 
+        [Fact]
+        public void Append_AddsCharAtEnd_ReturnsNewValue()
+        {
+            Word a = new Word("a");
+
+            Word ab = a.Append('b');
+
+            Assert.Equal("AB", ab.ToString());
+        }
+
         private static void ForEachInnerTest(string word, char[] expected)
         {
             Word w = new Word(word);
