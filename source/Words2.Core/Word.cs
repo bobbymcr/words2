@@ -110,6 +110,11 @@ namespace Words2
             }
         }
 
+        public int Length
+        {
+            get { return this.length; }
+        }
+
         public char this[int index]
         {
             get

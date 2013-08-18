@@ -26,10 +26,15 @@ namespace Words2.Test.Unit
             Word a5 = new Word("ABCabCABcabCaBC");
 
             Assert.Equal("ABC", a1.ToString());
+            Assert.Equal(3, a1.Length);
             Assert.Equal("ABCABC", a2.ToString());
+            Assert.Equal(6, a2.Length);
             Assert.Equal("ABCABCABC", a3.ToString());
+            Assert.Equal(9, a3.Length);
             Assert.Equal("ABCABCABCABC", a4.ToString());
+            Assert.Equal(12, a4.Length);
             Assert.Equal("ABCABCABCABCABC", a5.ToString());
+            Assert.Equal(15, a5.Length);
         }
 
         [Fact]
