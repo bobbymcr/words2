@@ -98,6 +98,31 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
+        public void CompareTo_ComparesCorrectly()
+        {
+            Word a = new Word("a");
+            Word aa = new Word("aa");
+            Word aaa = new Word("aaa");
+            Word aab = new Word("aab");
+            Word abb = new Word("abb");
+            Word bbb = new Word("bbb");
+            Word bcd = new Word("bcd");
+
+            Assert.True(a.CompareTo(aa) < 0);
+            Assert.True(aa.CompareTo(a) > 0);
+            Assert.True(aa.CompareTo(aaa) < 0);
+            Assert.True(aaa.CompareTo(aab) < 0);
+            Assert.True(aab.CompareTo(aaa) > 0);
+            Assert.True(aab.CompareTo(abb) < 0);
+            Assert.True(abb.CompareTo(aab) > 0);
+            Assert.True(bbb.CompareTo(aaa) > 0);
+            Assert.True(bbb.CompareTo(abb) > 0);
+            Assert.True(bbb.CompareTo(bcd) < 0);
+            Assert.True(bcd.CompareTo(bbb) > 0);
+            Assert.True(bcd.CompareTo(a) > 0);
+        }
+
+        [Fact]
         public void GetHashCode_ReturnsValidCode()
         {
             Word a1 = new Word("abc");

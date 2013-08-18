@@ -10,7 +10,7 @@ namespace Words2
     using System.Collections;
     using System.Collections.Generic;
 
-    public struct Word : IEquatable<Word>, IEnumerable<char>
+    public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
         private readonly string word;
 
@@ -58,6 +58,11 @@ namespace Words2
         public bool Equals(Word other)
         {
             return this.word == other.word;
+        }
+
+        public int CompareTo(Word other)
+        {
+            return string.Compare(this.word, other.word, StringComparison.Ordinal);
         }
 
         public IEnumerator<char> GetEnumerator()
