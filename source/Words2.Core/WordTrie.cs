@@ -40,6 +40,12 @@ namespace Words2
                 }
             }
 
+            if (!current.IsLeaf)
+            {
+                anyAdded = true;
+                current.IsLeaf = true;
+            }
+
             return anyAdded;
         }
 
@@ -70,16 +76,23 @@ namespace Words2
                 }
             }
 
-            return true;
+            return current.IsLeaf;
         }
 
         private sealed class Node
         {
             private readonly Dictionary<char, Node> children;
+            private bool isLeaf;
 
             public Node()
             {
                 this.children = new Dictionary<char, Node>();
+            }
+
+            public bool IsLeaf
+            {
+                get { return this.isLeaf; }
+                set { this.isLeaf = value; }
             }
 
             public bool TryAddChild(char key, out Node child)

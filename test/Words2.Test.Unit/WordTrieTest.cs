@@ -37,6 +37,10 @@ namespace Words2.Test.Unit
             Assert.False(trie.Add(new Word("azxy")));
             Assert.False(trie.Add(new Word("azxy")));
 
+            Assert.True(trie.Add(new Word("azx")));
+            Assert.False(trie.Add(new Word("azx")));
+            Assert.False(trie.Add(new Word("azx")));
+
             Assert.True(trie.Add(new Word("zxzxzxzxzxzxzxz")));
             Assert.False(trie.Add(new Word("zxzxzxzxzxzxzxz")));
             Assert.False(trie.Add(new Word("zxzxzxzxzxzxzxz")));
@@ -68,11 +72,30 @@ namespace Words2.Test.Unit
 
             trie.Add(new Word("abc"));
 
+            Assert.False(trie.Contains(new Word("ab")));
             Assert.True(trie.Contains(new Word("abc")));
 
             trie.Remove(new Word("abc"));
 
+            Assert.False(trie.Contains(new Word("ab")));
             Assert.False(trie.Contains(new Word("abc")));
+
+            trie.Add(new Word("abcdefghijklmno"));
+
+            Assert.False(trie.Contains(new Word("ab")));
+            Assert.False(trie.Contains(new Word("abc")));
+            Assert.False(trie.Contains(new Word("abcd")));
+            Assert.False(trie.Contains(new Word("abcde")));
+            Assert.False(trie.Contains(new Word("abcdef")));
+            Assert.False(trie.Contains(new Word("abcdefg")));
+            Assert.False(trie.Contains(new Word("abcdefgh")));
+            Assert.False(trie.Contains(new Word("abcdefghi")));
+            Assert.False(trie.Contains(new Word("abcdefghij")));
+            Assert.False(trie.Contains(new Word("abcdefghijk")));
+            Assert.False(trie.Contains(new Word("abcdefghijkl")));
+            Assert.False(trie.Contains(new Word("abcdefghijklm")));
+            Assert.False(trie.Contains(new Word("abcdefghijklmn")));
+            Assert.True(trie.Contains(new Word("abcdefghijklmno")));
         }
 
         [Fact]
