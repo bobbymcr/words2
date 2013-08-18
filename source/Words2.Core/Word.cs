@@ -48,6 +48,11 @@ namespace Words2
             this.word = sb.ToString();
         }
 
+        public char this[int index]
+        {
+            get { return this.word[index]; }
+        }
+
         public override string ToString()
         {
             return this.word;

@@ -257,6 +257,51 @@ namespace Words2.Test.Unit
             Assert.NotEqual(ca15, cab15);
         }
 
+        [Fact]
+        public void Indexer_OutOfRange_Throws()
+        {
+            Word w = new Word("a");
+            
+            Exception e = Record.Exception(() => w[1]);
+            Assert.NotNull(e);
+            Assert.IsType<IndexOutOfRangeException>(e);
+        }
+
+        [Fact]
+        public void Indexer_ShortWord_ReturnsCharAtPosition()
+        {
+            Word w = new Word("abcdefgh");
+            Assert.Equal('A', w[0]);
+            Assert.Equal('B', w[1]);
+            Assert.Equal('C', w[2]);
+            Assert.Equal('D', w[3]);
+            Assert.Equal('E', w[4]);
+            Assert.Equal('F', w[5]);
+            Assert.Equal('G', w[6]);
+            Assert.Equal('H', w[7]);
+        }
+
+        [Fact]
+        public void Indexer_LongWord_ReturnsCharAtPosition()
+        {
+            Word w = new Word("abcdefghijklmno");
+            Assert.Equal('A', w[0]);
+            Assert.Equal('B', w[1]);
+            Assert.Equal('C', w[2]);
+            Assert.Equal('D', w[3]);
+            Assert.Equal('E', w[4]);
+            Assert.Equal('F', w[5]);
+            Assert.Equal('G', w[6]);
+            Assert.Equal('H', w[7]);
+            Assert.Equal('I', w[8]);
+            Assert.Equal('J', w[9]);
+            Assert.Equal('K', w[10]);
+            Assert.Equal('L', w[11]);
+            Assert.Equal('M', w[12]);
+            Assert.Equal('N', w[13]);
+            Assert.Equal('O', w[14]);
+        }
+
         private static void ForEachInnerTest(string word, char[] expected)
         {
             Word w = new Word(word);
