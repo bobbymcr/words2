@@ -38,6 +38,21 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
+        public void FromString_AtSignAllowed()
+        {
+            Word a1 = new Word("@bc");
+            Word a2 = new Word("a@bc");
+            Word a3 = new Word("ab@cd");
+
+            Assert.Equal("@BC", a1.ToString());
+            Assert.Equal(3, a1.Length);
+            Assert.Equal("A@BC", a2.ToString());
+            Assert.Equal(4, a2.Length);
+            Assert.Equal("AB@CD", a3.ToString());
+            Assert.Equal(5, a3.Length);
+        }
+
+        [Fact]
         public void FromString_Digit_ThrowsArgument()
         {
             FromStringNonAlphaInnerTest("ab1cdefghijk", '1');
@@ -315,6 +330,58 @@ namespace Words2.Test.Unit
             Word ab = a.Append('b');
 
             Assert.Equal("AB", ab.ToString());
+        }
+
+        [Fact]
+        public void Replace_LongWord_ChangesCharAtIndexAndReturnsNewValue()
+        {
+            Word a = new Word("abcdefghijklmno");
+            Word b;
+
+            b = a.Replace(14, 'l');
+            Assert.Equal("ABCDEFGHIJKLMNL", b.ToString());
+
+            b = a.Replace(13, 'm');
+            Assert.Equal("ABCDEFGHIJKLMMO", b.ToString());
+
+            b = a.Replace(12, 'n');
+            Assert.Equal("ABCDEFGHIJKLNNO", b.ToString());
+
+            b = a.Replace(11, 'o');
+            Assert.Equal("ABCDEFGHIJKOMNO", b.ToString());
+
+            b = a.Replace(10, 'p');
+            Assert.Equal("ABCDEFGHIJPLMNO", b.ToString());
+
+            b = a.Replace(9, 'q');
+            Assert.Equal("ABCDEFGHIQKLMNO", b.ToString());
+
+            b = a.Replace(8, 'r');
+            Assert.Equal("ABCDEFGHRJKLMNO", b.ToString());
+
+            b = a.Replace(7, 's');
+            Assert.Equal("ABCDEFGSIJKLMNO", b.ToString());
+
+            b = a.Replace(6, 't');
+            Assert.Equal("ABCDEFTHIJKLMNO", b.ToString());
+
+            b = a.Replace(5, 'u');
+            Assert.Equal("ABCDEUGHIJKLMNO", b.ToString());
+
+            b = a.Replace(4, 'v');
+            Assert.Equal("ABCDVFGHIJKLMNO", b.ToString());
+
+            b = a.Replace(3, 'w');
+            Assert.Equal("ABCWEFGHIJKLMNO", b.ToString());
+
+            b = a.Replace(2, 'x');
+            Assert.Equal("ABXDEFGHIJKLMNO", b.ToString());
+
+            b = a.Replace(1, 'y');
+            Assert.Equal("AYCDEFGHIJKLMNO", b.ToString());
+
+            b = a.Replace(0, 'z');
+            Assert.Equal("ZBCDEFGHIJKLMNO", b.ToString());
         }
 
         private static void ForEachInnerTest(string word, char[] expected)

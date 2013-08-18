@@ -13,6 +13,8 @@ namespace Words2
 
     public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
+        public const char WildChar = '@';
+
         private readonly byte length;
         private readonly byte c0;
         private readonly byte c1;
@@ -171,6 +173,77 @@ namespace Words2
             }
         }
 
+        private Word(Word other, int index, char c)
+        {
+            byte a = Encode(c);
+            this.length = other.length;
+
+            this.c0 = other.c0;
+            this.c1 = other.c1;
+            this.c2 = other.c2;
+            this.c3 = other.c3;
+            this.c4 = other.c4;
+            this.c5 = other.c5;
+            this.c6 = other.c6;
+            this.c7 = other.c7;
+            this.c8 = other.c8;
+            this.c9 = other.c9;
+            this.cA = other.cA;
+            this.cB = other.cB;
+            this.cC = other.cC;
+            this.cD = other.cD;
+            this.cE = other.cE;
+
+            switch (index)
+            {
+                case 0x0:
+                    this.c0 = a;
+                    break;
+                case 0x1:
+                    this.c1 = a;
+                    break;
+                case 0x2:
+                    this.c2 = a;
+                    break;
+                case 0x3:
+                    this.c3 = a;
+                    break;
+                case 0x4:
+                    this.c4 = a;
+                    break;
+                case 0x5:
+                    this.c5 = a;
+                    break;
+                case 0x6:
+                    this.c6 = a;
+                    break;
+                case 0x7:
+                    this.c7 = a;
+                    break;
+                case 0x8:
+                    this.c8 = a;
+                    break;
+                case 0x9:
+                    this.c9 = a;
+                    break;
+                case 0xA:
+                    this.cA = a;
+                    break;
+                case 0xB:
+                    this.cB = a;
+                    break;
+                case 0xC:
+                    this.cC = a;
+                    break;
+                case 0xD:
+                    this.cD = a;
+                    break;
+                case 0xE:
+                    this.cE = a;
+                    break;
+            }
+        }
+
         public int Length
         {
             get { return this.length; }
@@ -192,6 +265,11 @@ namespace Words2
         public Word Append(char suffix)
         {
             return new Word(this, suffix);
+        }
+
+        public Word Replace(int index, char replacement)
+        {
+            return new Word(this, index, replacement);
         }
 
         public override string ToString()
@@ -299,7 +377,7 @@ namespace Words2
         {
             char cu = char.ToUpperInvariant(c);
             int a = cu - 'A' + 1;
-            if ((a < 1) || (a > 26))
+            if ((a < 0) || (a > 26))
             {
                 throw new ArgumentException("Word contained an invalid character ('" + c + "').", "word");
             }
