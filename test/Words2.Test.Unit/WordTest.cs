@@ -20,14 +20,42 @@ namespace Words2.Test.Unit
         public void FromString_NormalizesToUppercase()
         {
             Word a1 = new Word("abc");
-            Word a2 = new Word("abC");
-            Word a3 = new Word("ABC");
+            Word a2 = new Word("abCaBc");
+            Word a3 = new Word("ABCabCABc");
+            Word a4 = new Word("ABCabCABcabC");
+            Word a5 = new Word("ABCabCABcabCaBC");
 
             Assert.Equal("ABC", a1.ToString());
-            Assert.Equal("ABC", a2.ToString());
-            Assert.Equal("ABC", a3.ToString());
+            Assert.Equal("ABCABC", a2.ToString());
+            Assert.Equal("ABCABCABC", a3.ToString());
+            Assert.Equal("ABCABCABCABC", a4.ToString());
+            Assert.Equal("ABCABCABCABCABC", a5.ToString());
         }
 
+        [Fact]
+        public void FromString_Digit_ThrowsArgument()
+        {
+            FromStringNonAlphaInnerTest("ab1cdefghijk", '1');
+        }
+
+        [Fact]
+        public void FromString_Space_ThrowsArgument()
+        {
+            FromStringNonAlphaInnerTest(" lmnopqrstuv", ' ');
+        }
+
+        [Fact]
+        public void FromString_Punctuation_ThrowsArgument()
+        {
+            FromStringNonAlphaInnerTest("w.xyz", '.');
+        }
+
+        [Fact]
+        public void FromString_NotAToZ_ThrowsArgument()
+        {
+            FromStringNonAlphaInnerTest("abcdé", 'é');
+        }
+        
         [Fact]
         public void FromString_NullWord_ThrowsArgumentNull()
         {
@@ -59,7 +87,7 @@ namespace Words2.Test.Unit
             Assert.NotNull(e);
             ArgumentOutOfRangeException aoore = Assert.IsType<ArgumentOutOfRangeException>(e);
             Assert.Equal("word", aoore.ParamName);
-            Assert.Contains(" 15 ", aoore.Message);
+            Assert.Contains(" 15 ", aoore.Message, StringComparison.Ordinal);
         }
 
         [Fact]
@@ -148,6 +176,16 @@ namespace Words2.Test.Unit
             }
 
             Assert.Equal(expected, items.ToArray());
+        }
+
+        private static void FromStringNonAlphaInnerTest(string word, char expected)
+        {
+            Exception e = Record.Exception(() => new Word(word));
+
+            Assert.NotNull(e);
+            ArgumentException ane = Assert.IsType<ArgumentException>(e);
+            Assert.Equal("word", ane.ParamName);
+            Assert.Contains("'" + expected + "'", ane.Message, StringComparison.Ordinal);
         }
     }
 }

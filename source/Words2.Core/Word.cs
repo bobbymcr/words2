@@ -9,6 +9,7 @@ namespace Words2
     using System;
     using System.Collections;
     using System.Collections.Generic;
+    using System.Text;
 
     public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
@@ -31,7 +32,20 @@ namespace Words2
                 throw new ArgumentOutOfRangeException("word", "Word cannot be longer than 15 characters.");
             }
 
-            this.word = word.ToUpperInvariant();
+            StringBuilder sb = new StringBuilder();
+            foreach (char c in word)
+            {
+                char cu = char.ToUpperInvariant(c);
+                int a = cu - 'A';
+                if ((a < 0) || (a > 25))
+                {
+                    throw new ArgumentException("Word contained an invalid character ('" + c + "').", "word");
+                }
+
+                sb.Append(cu);
+            }
+
+            this.word = sb.ToString();
         }
 
         public override string ToString()
