@@ -29,6 +29,40 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
+        public void FromString_NullWord_ThrowsArgumentNull()
+        {
+            string word = null;
+            Exception e = Record.Exception(() => new Word(word));
+
+            Assert.NotNull(e);
+            ArgumentNullException ane = Assert.IsType<ArgumentNullException>(e);
+            Assert.Equal("word", ane.ParamName);
+        }
+
+        [Fact]
+        public void FromString_EmptyWord_ThrowsArgument()
+        {
+            string word = string.Empty;
+            Exception e = Record.Exception(() => new Word(word));
+
+            Assert.NotNull(e);
+            ArgumentException ane = Assert.IsType<ArgumentException>(e);
+            Assert.Equal("word", ane.ParamName);
+        }
+
+        [Fact]
+        public void FromString_TooLong_ThrowsArgumentOutOfRange()
+        {
+            string word = "aaaabbbbccccdddd";
+            Exception e = Record.Exception(() => new Word(word));
+
+            Assert.NotNull(e);
+            ArgumentOutOfRangeException aoore = Assert.IsType<ArgumentOutOfRangeException>(e);
+            Assert.Equal("word", aoore.ParamName);
+            Assert.Contains(" 15 ", aoore.Message);
+        }
+
+        [Fact]
         public void ForEach_OneChar_RunsForEachChar()
         {
             ForEachInnerTest("a", new char[] { 'A' });

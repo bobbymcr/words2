@@ -16,6 +16,21 @@ namespace Words2
 
         public Word(string word)
         {
+            if (word == null)
+            {
+                throw new ArgumentNullException("word");
+            }
+
+            if (word.Length == 0)
+            {
+                throw new ArgumentException("Word cannot be empty.", "word");
+            }
+
+            if (word.Length > 15)
+            {
+                throw new ArgumentOutOfRangeException("word", "Word cannot be longer than 15 characters.");
+            }
+
             this.word = word.ToUpperInvariant();
         }
 
