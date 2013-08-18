@@ -145,5 +145,95 @@ namespace Words2.Test.Unit
             Assert.False(trie.Remove(new Word("vwxy")));
             Assert.False(trie.Remove(new Word("vwxy")));
         }
+
+        [Fact]
+        public void Match_EmptyTrie_DoesNothing()
+        {
+            WordTrie trie = new WordTrie();
+
+            int count = 0;
+            trie.Match(new Word("aaaa"), w => ++count);
+
+            Assert.Equal(0, count);
+        }
+
+        [Fact]
+        public void Match_FirstCharNoMatch_DoesNothing()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("baaa"));
+            
+            int count = 0;
+            trie.Match(new Word("aaaa"), w => ++count);
+
+            Assert.Equal(0, count);
+        }
+
+        [Fact]
+        public void Match_FirstCharMatchButNoOtherMatch_DoesNothing()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abbb"));
+
+            int count = 0;
+            trie.Match(new Word("ac"), w => ++count);
+
+            Assert.Equal(0, count);
+        }
+
+        [Fact]
+        public void Match_FirstLevelOneMatch_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("ab"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("a"), w => words.Add(w.ToString()));
+
+            Assert.Equal(new string[] { "AB" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_FirstLevelTwoMatches_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("ab"));
+            trie.Add(new Word("ac"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("a"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "AB", "AC" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_FirstAndSecondLevelTwoMatches_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("abd"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("ab"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABC", "ABD" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_FirstLevelThreeDeepMatches_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("adefghijkl"));
+            trie.Add(new Word("acdefghi"));
+            trie.Add(new Word("abcdefg"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("a"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABCDEFG", "ACDEFGHI", "ADEFGHIJKL" }, words.ToArray());
+        }
     }
 }

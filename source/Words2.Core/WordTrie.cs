@@ -66,17 +66,38 @@ namespace Words2
 
         public bool Contains(Word item)
         {
-            Node current = this.root;
+            bool found = false;
+            Node node;
+            if (this.ContainsInner(item, out node))
+            {
+                found = node.IsLeaf;
+            }
+
+            return found;
+        }
+
+        public void Match(Word prefix, Action<Word> onMatch)
+        {
+            Node node;
+            if (this.ContainsInner(prefix, out node))
+            {
+                node.MatchSelfAndChildren(prefix, onMatch);
+            }
+        }
+
+        private bool ContainsInner(Word item, out Node node)
+        {
+            node = this.root;
             for (int i = 0; i < item.Length; ++i)
             {
-                bool found = current.TryGetChild(item[i], out current);
+                bool found = node.TryGetChild(item[i], out node);
                 if (!found)
                 {
                     return false;
                 }
             }
 
-            return current.IsLeaf;
+            return true;
         }
 
         private sealed class Node
@@ -123,6 +144,20 @@ namespace Words2
             public bool TryGetChild(char key, out Node child)
             {
                 return this.children.TryGetValue(key, out child);
+            }
+
+            public void MatchSelfAndChildren(Word prefix, Action<Word> onMatch)
+            {
+                if (this.IsLeaf)
+                {
+                    onMatch(prefix);
+                }
+
+                foreach (KeyValuePair<char, Node> child in this.children)
+                {
+                    Word word = prefix.Append(child.Key);
+                    child.Value.MatchSelfAndChildren(word, onMatch);
+                }
             }
         }
     }
