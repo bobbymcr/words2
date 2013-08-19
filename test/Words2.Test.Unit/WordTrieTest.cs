@@ -315,5 +315,42 @@ namespace Words2.Test.Unit
             words.Sort();
             Assert.Equal(new string[] { "CCC", "DDDD", "EEEEE" }, words.ToArray());
         }
+
+        [Fact]
+        public void MatchMaxLength_TwoCharsMaxLength3_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("a"));
+            trie.Add(new Word("bb"));
+            trie.Add(new Word("cc"));
+            trie.Add(new Word("ccc"));
+            trie.Add(new Word("ccd"));
+            trie.Add(new Word("cccc"));
+            trie.Add(new Word("dddd"));
+            trie.Add(new Word("eeeee"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("cc"), 3, w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "CC", "CCC", "CCD", }, words.ToArray());
+        }
+
+        [Fact]
+        public void MatchMaxLength_ThreeCharsAllWildMaxLength4_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("a"));
+            trie.Add(new Word("bb"));
+            trie.Add(new Word("ccc"));
+            trie.Add(new Word("dddd"));
+            trie.Add(new Word("eeeee"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("@@@"), 4, w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "CCC", "DDDD" }, words.ToArray());
+        }
     }
 }

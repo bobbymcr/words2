@@ -78,7 +78,12 @@ namespace Words2
 
         public void Match(Word prefix, Action<Word> onMatch)
         {
-            this.root.Match(prefix, onMatch);
+            this.root.Match(prefix, Word.MaxLength, onMatch);
+        }
+
+        public void Match(Word prefix, int maxLength, Action<Word> onMatch)
+        {
+            this.root.Match(prefix, maxLength, onMatch);
         }
 
         private bool ContainsInner(Word item, out Node node)
@@ -142,15 +147,20 @@ namespace Words2
                 return this.children.TryGetValue(key, out child);
             }
 
-            public void Match(Word prefix, Action<Word> onMatch)
+            public void Match(Word prefix, int charsRemaining, Action<Word> onMatch)
             {
-                MatchInner(this, prefix, 0, onMatch);
+                MatchInner(this, prefix, charsRemaining, 0, onMatch);
             }
 
-            private static void MatchInner(Node current, Word prefix, int start, Action<Word> onMatch)
+            private static void MatchInner(Node current, Word prefix, int charsRemaining, int start, Action<Word> onMatch)
             {
                 for (int i = start; i < prefix.Length; ++i)
                 {
+                    if (charsRemaining == 0)
+                    {
+                        return;
+                    }
+
                     char c = prefix[i];
                     if (c != Word.WildChar)
                     {
@@ -158,23 +168,30 @@ namespace Words2
                         {
                             return;
                         }
+
+                        --charsRemaining;
                     }
                     else
                     {
                         foreach (KeyValuePair<char, Node> child in current.children)
                         {
-                            MatchInner(child.Value, prefix.Replace(i, child.Key), i + 1, onMatch);
+                            MatchInner(child.Value, prefix.Replace(i, child.Key), charsRemaining - 1, i + 1, onMatch);
                         }
 
                         return;
                     }
                 }
 
-                current.MatchSelfAndChildren(prefix, onMatch);
+                current.MatchSelfAndChildren(prefix, charsRemaining, onMatch);
             }
 
-            private void MatchSelfAndChildren(Word prefix, Action<Word> onMatch)
+            private void MatchSelfAndChildren(Word prefix, int charsRemaining, Action<Word> onMatch)
             {
+                if (charsRemaining < 0)
+                {
+                    return;
+                }
+
                 if (this.IsLeaf)
                 {
                     onMatch(prefix);
@@ -183,7 +200,7 @@ namespace Words2
                 foreach (KeyValuePair<char, Node> child in this.children)
                 {
                     Word word = prefix.Append(child.Key);
-                    child.Value.MatchSelfAndChildren(word, onMatch);
+                    child.Value.MatchSelfAndChildren(word, charsRemaining - 1, onMatch);
                 }
             }
         }

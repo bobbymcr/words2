@@ -14,6 +14,7 @@ namespace Words2
     public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
         public const char WildChar = '@';
+        public const int MaxLength = 15;
 
         private readonly byte length;
         private readonly byte c0;
@@ -44,9 +45,9 @@ namespace Words2
                 throw new ArgumentException("Word cannot be empty.", "word");
             }
 
-            if (word.Length > 15)
+            if (word.Length > MaxLength)
             {
-                throw new ArgumentOutOfRangeException("word", "Word cannot be longer than 15 characters.");
+                throw new ArgumentOutOfRangeException("word", "Word cannot be longer than " + MaxLength + " characters.");
             }
 
             this.length = (byte)word.Length;
