@@ -235,5 +235,85 @@ namespace Words2.Test.Unit
             words.Sort();
             Assert.Equal(new string[] { "ABCDEFG", "ACDEFGHI", "ADEFGHIJKL" }, words.ToArray());
         }
+
+        [Fact]
+        public void Match_OneCharFirstLevelWild_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("xbc"));
+            trie.Add(new Word("zbc"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("@"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABC", "XBC", "ZBC" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_TwoCharsFirstLevelWild_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("bbb"));
+            trie.Add(new Word("bbxx"));
+            trie.Add(new Word("ccccc"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("@b"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABC", "BBB", "BBXX" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_TwoCharsSecondLevelWild_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("acd"));
+            trie.Add(new Word("axy"));
+            trie.Add(new Word("bcd"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("a@"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABC", "ACD", "AXY" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_ThreeCharsSecondLevelWild_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("acc"));
+            trie.Add(new Word("axa"));
+            trie.Add(new Word("axc"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("a@c"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "ABC", "ACC", "AXC" }, words.ToArray());
+        }
+
+        [Fact]
+        public void Match_ThreeCharsAllWild_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("a"));
+            trie.Add(new Word("bb"));
+            trie.Add(new Word("ccc"));
+            trie.Add(new Word("dddd"));
+            trie.Add(new Word("eeeee"));
+
+            List<string> words = new List<string>();
+            trie.Match(new Word("@@@"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "CCC", "DDDD", "EEEEE" }, words.ToArray());
+        }
     }
 }

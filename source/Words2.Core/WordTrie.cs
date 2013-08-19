@@ -78,11 +78,7 @@ namespace Words2
 
         public void Match(Word prefix, Action<Word> onMatch)
         {
-            Node node;
-            if (this.ContainsInner(prefix, out node))
-            {
-                node.MatchSelfAndChildren(prefix, onMatch);
-            }
+            this.root.Match(prefix, onMatch);
         }
 
         private bool ContainsInner(Word item, out Node node)
@@ -146,7 +142,38 @@ namespace Words2
                 return this.children.TryGetValue(key, out child);
             }
 
-            public void MatchSelfAndChildren(Word prefix, Action<Word> onMatch)
+            public void Match(Word prefix, Action<Word> onMatch)
+            {
+                MatchInner(this, prefix, 0, onMatch);
+            }
+
+            private static void MatchInner(Node current, Word prefix, int start, Action<Word> onMatch)
+            {
+                for (int i = start; i < prefix.Length; ++i)
+                {
+                    char c = prefix[i];
+                    if (c != Word.WildChar)
+                    {
+                        if (!current.TryGetChild(c, out current))
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        foreach (KeyValuePair<char, Node> child in current.children)
+                        {
+                            MatchInner(child.Value, prefix.Replace(i, child.Key), i + 1, onMatch);
+                        }
+
+                        return;
+                    }
+                }
+
+                current.MatchSelfAndChildren(prefix, onMatch);
+            }
+
+            private void MatchSelfAndChildren(Word prefix, Action<Word> onMatch)
             {
                 if (this.IsLeaf)
                 {
