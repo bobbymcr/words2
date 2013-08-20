@@ -40,11 +40,6 @@ namespace Words2
                 throw new ArgumentNullException("word");
             }
 
-            if (word.Length == 0)
-            {
-                throw new ArgumentException("Word cannot be empty.", "word");
-            }
-
             if (word.Length > MaxLength)
             {
                 throw new ArgumentOutOfRangeException("word", "Word cannot be longer than " + MaxLength + " characters.");
@@ -129,6 +124,9 @@ namespace Words2
 
             switch (this.length)
             {
+                case 0x1:
+                    this.c0 = a;
+                    break;
                 case 0x2:
                     this.c1 = a;
                     break;

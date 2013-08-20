@@ -88,14 +88,11 @@ namespace Words2.Test.Unit
         }
 
         [Fact]
-        public void FromString_EmptyWord_ThrowsArgument()
+        public void FromString_EmptyWord()
         {
-            string word = string.Empty;
-            Exception e = Record.Exception(() => new Word(word));
+            Word word = new Word(string.Empty);
 
-            Assert.NotNull(e);
-            ArgumentException ane = Assert.IsType<ArgumentException>(e);
-            Assert.Equal("word", ane.ParamName);
+            Assert.Equal(0, word.Length);
         }
 
         [Fact]
@@ -330,6 +327,16 @@ namespace Words2.Test.Unit
             Word ab = a.Append('b');
 
             Assert.Equal("AB", ab.ToString());
+        }
+
+        [Fact]
+        public void Append_EmptyAddsCharAtEnd_ReturnsNewValue()
+        {
+            Word empty = new Word(string.Empty);
+
+            Word b = empty.Append('b');
+
+            Assert.Equal("B", b.ToString());
         }
 
         [Fact]
