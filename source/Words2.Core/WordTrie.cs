@@ -76,6 +76,11 @@ namespace Words2
             return found;
         }
 
+        public void MatchAnagram(Word input, Action<Word> onMatch)
+        {
+            this.root.MatchAnagram(input, onMatch);
+        }
+
         public void Match(Word prefix, Action<Word> onMatch)
         {
             this.root.Match(prefix, Word.MaxLength, onMatch);
@@ -147,6 +152,11 @@ namespace Words2
                 return this.children.TryGetValue(key, out child);
             }
 
+            public void MatchAnagram(Word input, Action<Word> onMatch)
+            {
+                this.MatchAnagramInner(input, new Word(string.Empty), onMatch);
+            }
+
             public void Match(Word prefix, int charsRemaining, Action<Word> onMatch)
             {
                 MatchInner(this, prefix, charsRemaining, 0, onMatch);
@@ -183,6 +193,33 @@ namespace Words2
                 }
 
                 current.MatchSelfAndChildren(prefix, charsRemaining, onMatch);
+            }
+
+            private void MatchAnagramInner(Word input, Word current, Action<Word> onMatch)
+            {
+                HashSet<char> used = new HashSet<char>();
+                int wildCount = 0;
+                for (int i = 0; i < input.Length; ++i)
+                {
+                    char c = input[i];
+                    if (c == Word.WildChar)
+                    {
+                        ++wildCount;
+                    }
+                    else if (used.Add(c))
+                    {
+                        Node child;
+                        if (this.TryGetChild(c, out child))
+                        {
+                            child.MatchAnagramInner(input.Replace(i, Word.WildChar), current.Append(c), onMatch);
+                        }
+                    }
+                }
+
+                if ((wildCount == input.Length) && this.IsLeaf)
+                {
+                    onMatch(current);
+                }
             }
 
             private void MatchSelfAndChildren(Word prefix, int charsRemaining, Action<Word> onMatch)

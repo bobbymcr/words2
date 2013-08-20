@@ -352,5 +352,78 @@ namespace Words2.Test.Unit
             words.Sort();
             Assert.Equal(new string[] { "CCC", "DDDD" }, words.ToArray());
         }
+
+        [Fact]
+        public void MatchAnagram_Length1_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("a"));
+            trie.Add(new Word("ab"));
+            trie.Add(new Word("b"));
+            trie.Add(new Word("bc"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("a"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "A" }, words.ToArray());
+        }
+
+        [Fact]
+        public void MatchAnagram_Length2_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("aa"));
+            trie.Add(new Word("aab"));
+            trie.Add(new Word("bbb"));
+            trie.Add(new Word("bc"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("aa"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "AA" }, words.ToArray());
+        }
+
+        [Fact]
+        public void MatchAnagram_Length3_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("dfg"));
+            trie.Add(new Word("f"));
+            trie.Add(new Word("fed"));
+            trie.Add(new Word("feds"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("def"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "FED" }, words.ToArray());
+        }
+
+        [Fact]
+        public void MatchAnagram_Length6_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("abc"));
+            trie.Add(new Word("bcd"));
+            trie.Add(new Word("east"));
+            trie.Add(new Word("easter"));
+            trie.Add(new Word("eaters"));
+            trie.Add(new Word("era"));
+            trie.Add(new Word("erase"));
+            trie.Add(new Word("eraser"));
+            trie.Add(new Word("extra"));
+            trie.Add(new Word("seat"));
+            trie.Add(new Word("seater"));
+            trie.Add(new Word("tease"));
+            trie.Add(new Word("teaser"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("eersta"), w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "EASTER", "EATERS", "SEATER", "TEASER" }, words.ToArray());
+        }
     }
 }
