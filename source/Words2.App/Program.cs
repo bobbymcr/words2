@@ -33,13 +33,44 @@ namespace Words2
                 string line = Console.ReadLine();
                 if (!string.IsNullOrEmpty(line))
                 {
-                    if (line.StartsWith("?", StringComparison.Ordinal))
+                    string[] fields = line.Split(new char[] { ':' }, 2);
+                    int length = -1;
+                    if (fields.Length == 2)
                     {
-                        MatchAnagram(trie, line);
+                        if (!int.TryParse(fields[1], out length))
+                        {
+                            Console.WriteLine("Bad length value.");
+                            return;
+                        }
+                    }
+
+                    bool isAnagram = false;
+                    if (fields[0].StartsWith("?", StringComparison.Ordinal))
+                    {
+                        isAnagram = true;
+                        fields[0] = fields[0].Substring(1);
+                    }
+
+                    if (fields[0].Length > Word.MaxLength)
+                    {
+                        Console.WriteLine("Word is too long.");
+                        continue;
+                    }
+
+                    Word input = new Word(fields[0]);
+
+                    if (length == -1)
+                    {
+                        length = isAnagram ? input.Length : Word.MaxLength;
+                    }
+
+                    if (isAnagram)
+                    {
+                        MatchAnagram(trie, input, length);
                     }
                     else
                     {
-                        MatchPrefix(trie, line);
+                        MatchPrefix(trie, input, length);
                     }
                 }
                 else
@@ -49,15 +80,8 @@ namespace Words2
             }
         }
 
-        private static void MatchAnagram(WordTrie trie, string line)
+        private static void MatchAnagram(WordTrie trie, Word input, int minLength)
         {
-            if (line.Length == 1)
-            {
-                Console.WriteLine("Invalid input.");
-                return;
-            }
-
-            Word input = new Word(line.Substring(1));
             int count = 0;
             Action<Word> onMatch = delegate(Word match)
             {
@@ -68,32 +92,14 @@ namespace Words2
 
             Console.Write("Matches: ");
             Stopwatch stopwatch = Stopwatch.StartNew();
-            trie.MatchAnagram(input, onMatch);
+            trie.MatchAnagram(input, minLength, onMatch);
 
             Console.WriteLine();
             Console.WriteLine(" total found: {0} (elapsed time {1:0.000} sec).", count, stopwatch.Elapsed.TotalSeconds);
         }
 
-        private static void MatchPrefix(WordTrie trie, string line)
+        private static void MatchPrefix(WordTrie trie, Word input, int maxLength)
         {
-            string[] fields = line.Split(new char[] { ':' }, 2);
-            int maxLength = Word.MaxLength;
-            if (fields.Length == 2)
-            {
-                if (!int.TryParse(fields[1], out maxLength))
-                {
-                    Console.WriteLine("Bad length value.");
-                    return;
-                }
-            }
-
-            if (fields[0].Length > Word.MaxLength)
-            {
-                Console.WriteLine("Word is too long.");
-                return;
-            }
-
-            Word prefix = new Word(fields[0]);
             int count = 0;
             Action<Word> onMatch = delegate(Word match)
             {
@@ -104,7 +110,7 @@ namespace Words2
 
             Console.Write("Matches: ");
             Stopwatch stopwatch = Stopwatch.StartNew();
-            trie.Match(prefix, maxLength, onMatch);
+            trie.Match(input, maxLength, onMatch);
 
             Console.WriteLine();
             Console.WriteLine(" total found: {0} (elapsed time {1:0.000} sec).", count, stopwatch.Elapsed.TotalSeconds);

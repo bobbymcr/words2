@@ -425,5 +425,48 @@ namespace Words2.Test.Unit
             words.Sort();
             Assert.Equal(new string[] { "EASTER", "EATERS", "SEATER", "TEASER" }, words.ToArray());
         }
+
+        [Fact]
+        public void MatchAnagram_MinLength1_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("a"));
+            trie.Add(new Word("ab"));
+            trie.Add(new Word("b"));
+            trie.Add(new Word("bc"));
+            trie.Add(new Word("bcd"));
+            trie.Add(new Word("c"));
+            trie.Add(new Word("cab"));
+            trie.Add(new Word("d"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("abc"), 1, w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "A", "AB", "B", "BC", "C", "CAB" }, words.ToArray());
+        }
+
+        [Fact]
+        public void MatchAnagram_MinLength3_InvokesOnAllMatches()
+        {
+            WordTrie trie = new WordTrie();
+            trie.Add(new Word("area"));
+            trie.Add(new Word("best"));
+            trie.Add(new Word("ear"));
+            trie.Add(new Word("ears"));
+            trie.Add(new Word("east"));
+            trie.Add(new Word("eat"));
+            trie.Add(new Word("raster"));
+            trie.Add(new Word("rates"));
+            trie.Add(new Word("steer"));
+            trie.Add(new Word("tear"));
+            trie.Add(new Word("treat"));
+
+            List<string> words = new List<string>();
+            trie.MatchAnagram(new Word("eersta"), 3, w => words.Add(w.ToString()));
+
+            words.Sort();
+            Assert.Equal(new string[] { "EAR", "EARS", "EAST", "EAT", "RATES", "STEER", "TEAR" }, words.ToArray());
+        }
     }
 }

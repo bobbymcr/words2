@@ -78,7 +78,12 @@ namespace Words2
 
         public void MatchAnagram(Word input, Action<Word> onMatch)
         {
-            this.root.MatchAnagram(input, onMatch);
+            this.MatchAnagram(input, input.Length, onMatch);
+        }
+
+        public void MatchAnagram(Word input, int minLength, Action<Word> onMatch)
+        {
+            this.root.MatchAnagram(input, minLength, onMatch);
         }
 
         public void Match(Word prefix, Action<Word> onMatch)
@@ -152,9 +157,9 @@ namespace Words2
                 return this.children.TryGetValue(key, out child);
             }
 
-            public void MatchAnagram(Word input, Action<Word> onMatch)
+            public void MatchAnagram(Word input, int minLength, Action<Word> onMatch)
             {
-                this.MatchAnagramInner(input, new Word(string.Empty), onMatch);
+                this.MatchAnagramInner(input, minLength, new Word(string.Empty), onMatch);
             }
 
             public void Match(Word prefix, int charsRemaining, Action<Word> onMatch)
@@ -195,7 +200,7 @@ namespace Words2
                 current.MatchSelfAndChildren(prefix, charsRemaining, onMatch);
             }
 
-            private void MatchAnagramInner(Word input, Word current, Action<Word> onMatch)
+            private void MatchAnagramInner(Word input, int minLength, Word current, Action<Word> onMatch)
             {
                 HashSet<char> used = new HashSet<char>();
                 int wildCount = 0;
@@ -211,12 +216,12 @@ namespace Words2
                         Node child;
                         if (this.TryGetChild(c, out child))
                         {
-                            child.MatchAnagramInner(input.Replace(i, Word.WildChar), current.Append(c), onMatch);
+                            child.MatchAnagramInner(input.Replace(i, Word.WildChar), minLength, current.Append(c), onMatch);
                         }
                     }
                 }
 
-                if ((wildCount == input.Length) && this.IsLeaf)
+                if ((wildCount >= minLength) && this.IsLeaf)
                 {
                     onMatch(current);
                 }
