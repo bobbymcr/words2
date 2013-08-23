@@ -45,8 +45,8 @@ namespace Words2
                 throw new ArgumentOutOfRangeException("word", "Word cannot be longer than " + MaxLength + " characters.");
             }
 
+            this = new Word();
             this.length = (byte)word.Length;
-            this.c0 = this.c1 = this.c2 = this.c3 = this.c4 = this.c5 = this.c6 = this.c7 = this.c8 = this.c9 = this.cA = this.cB = this.cC = this.cD = this.cE = 0;
             for (int i = 0; i < this.length; ++i)
             {
                 byte a = Encode(word[i]);
@@ -103,24 +103,9 @@ namespace Words2
 
         private Word(Word other, char c)
         {
+            this = other;
             byte a = Encode(c);
             this.length = (byte)(other.length + 1);
-
-            this.c0 = other.c0;
-            this.c1 = other.c1;
-            this.c2 = other.c2;
-            this.c3 = other.c3;
-            this.c4 = other.c4;
-            this.c5 = other.c5;
-            this.c6 = other.c6;
-            this.c7 = other.c7;
-            this.c8 = other.c8;
-            this.c9 = other.c9;
-            this.cA = other.cA;
-            this.cB = other.cB;
-            this.cC = other.cC;
-            this.cD = other.cD;
-            this.cE = other.cE;
 
             switch (this.length)
             {
@@ -174,24 +159,8 @@ namespace Words2
 
         private Word(Word other, int index, char c)
         {
+            this = other;
             byte a = Encode(c);
-            this.length = other.length;
-
-            this.c0 = other.c0;
-            this.c1 = other.c1;
-            this.c2 = other.c2;
-            this.c3 = other.c3;
-            this.c4 = other.c4;
-            this.c5 = other.c5;
-            this.c6 = other.c6;
-            this.c7 = other.c7;
-            this.c8 = other.c8;
-            this.c9 = other.c9;
-            this.cA = other.cA;
-            this.cB = other.cB;
-            this.cC = other.cC;
-            this.cD = other.cD;
-            this.cE = other.cE;
 
             switch (index)
             {
