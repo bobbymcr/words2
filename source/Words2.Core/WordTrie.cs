@@ -213,10 +213,21 @@ namespace Words2
                     }
                     else if (used.Add(c))
                     {
-                        Node child;
-                        if (this.TryGetChild(c, out child))
+                        if (c != Word.WildChar)
                         {
-                            child.MatchAnagramInner(input.Replace(i, Word.NullChar), minLength, current.Append(c), onMatch);
+                            Node child;
+                            if (this.TryGetChild(c, out child))
+                            {
+                                child.MatchAnagramInner(input.Replace(i, Word.NullChar), minLength, current.Append(c), onMatch);
+                            }
+                        }
+                        else
+                        {
+                            Word nextInput = input.Replace(i, Word.NullChar);
+                            foreach (KeyValuePair<char, Node> child in this.children)
+                            {
+                                child.Value.MatchAnagramInner(nextInput, minLength, current.Append(child.Key), onMatch);
+                            }
                         }
                     }
                 }

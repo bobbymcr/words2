@@ -7,6 +7,7 @@
 namespace Words2
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
 
@@ -40,12 +41,12 @@ namespace Words2
                         if (!int.TryParse(fields[1], out length))
                         {
                             Console.WriteLine("Bad length value.");
-                            return;
+                            continue;
                         }
                     }
 
                     bool isAnagram = false;
-                    if (fields[0].StartsWith("?", StringComparison.Ordinal))
+                    if (fields[0].StartsWith("*", StringComparison.Ordinal))
                     {
                         isAnagram = true;
                         fields[0] = fields[0].Substring(1);
@@ -82,12 +83,14 @@ namespace Words2
 
         private static void MatchAnagram(WordTrie trie, Word input, int minLength)
         {
-            int count = 0;
+            HashSet<Word> found = new HashSet<Word>();
             Action<Word> onMatch = delegate(Word match)
             {
-                Console.Write(match.ToString());
-                Console.Write(" ");
-                ++count;
+                if (found.Add(match))
+                {
+                    Console.Write(match.ToString());
+                    Console.Write(" ");
+                }
             };
 
             Console.Write("Matches: ");
@@ -95,7 +98,7 @@ namespace Words2
             trie.MatchAnagram(input, minLength, onMatch);
 
             Console.WriteLine();
-            Console.WriteLine(" total found: {0} (elapsed time {1:0.000} sec).", count, stopwatch.Elapsed.TotalSeconds);
+            Console.WriteLine(" total found: {0} (elapsed time {1:0.000} sec).", found.Count, stopwatch.Elapsed.TotalSeconds);
         }
 
         private static void MatchPrefix(WordTrie trie, Word input, int maxLength)
