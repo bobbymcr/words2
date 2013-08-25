@@ -13,7 +13,7 @@ namespace Words2
 
     public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
-        public const char WildChar = '@';
+        public const char WildChar = '?';
         public const int MaxLength = 15;
 
         private readonly byte length;
@@ -226,7 +226,7 @@ namespace Words2
                     throw new IndexOutOfRangeException();
                 }
 
-                return (char)(this.GetByteValue(index) + 'A' - 1);
+                return (char)(this.GetByteValue(index) + WildChar);
             }
         }
 
@@ -344,8 +344,8 @@ namespace Words2
         private static byte Encode(char c)
         {
             char cu = char.ToUpperInvariant(c);
-            int a = cu - 'A' + 1;
-            if ((a < 0) || (a > 26))
+            int a = cu - WildChar;
+            if ((a < 0) || (a > 28))
             {
                 throw new ArgumentException("Word contained an invalid character ('" + c + "').", "word");
             }

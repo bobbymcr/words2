@@ -40,15 +40,15 @@ namespace Words2.Test.Unit
         [Fact]
         public void FromString_AtSignAllowed()
         {
-            Word a1 = new Word("@bc");
-            Word a2 = new Word("a@bc");
-            Word a3 = new Word("ab@cd");
+            Word a1 = new Word("?bc");
+            Word a2 = new Word("a?bc");
+            Word a3 = new Word("ab?cd");
 
-            Assert.Equal("@BC", a1.ToString());
+            Assert.Equal("?BC", a1.ToString());
             Assert.Equal(3, a1.Length);
-            Assert.Equal("A@BC", a2.ToString());
+            Assert.Equal("A?BC", a2.ToString());
             Assert.Equal(4, a2.Length);
-            Assert.Equal("AB@CD", a3.ToString());
+            Assert.Equal("AB?CD", a3.ToString());
             Assert.Equal(5, a3.Length);
         }
 

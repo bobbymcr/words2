@@ -245,7 +245,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("zbc"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("@"), w => words.Add(w.ToString()));
+            trie.Match(new Word("?"), w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "ABC", "XBC", "ZBC" }, words.ToArray());
@@ -261,7 +261,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("ccccc"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("@b"), w => words.Add(w.ToString()));
+            trie.Match(new Word("?b"), w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "ABC", "BBB", "BBXX" }, words.ToArray());
@@ -277,7 +277,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("bcd"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("a@"), w => words.Add(w.ToString()));
+            trie.Match(new Word("a?"), w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "ABC", "ACD", "AXY" }, words.ToArray());
@@ -293,7 +293,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("axc"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("a@c"), w => words.Add(w.ToString()));
+            trie.Match(new Word("a?c"), w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "ABC", "ACC", "AXC" }, words.ToArray());
@@ -310,7 +310,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("eeeee"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("@@@"), w => words.Add(w.ToString()));
+            trie.Match(new Word("???"), w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "CCC", "DDDD", "EEEEE" }, words.ToArray());
@@ -347,7 +347,7 @@ namespace Words2.Test.Unit
             trie.Add(new Word("eeeee"));
 
             List<string> words = new List<string>();
-            trie.Match(new Word("@@@"), 4, w => words.Add(w.ToString()));
+            trie.Match(new Word("???"), 4, w => words.Add(w.ToString()));
 
             words.Sort();
             Assert.Equal(new string[] { "CCC", "DDDD" }, words.ToArray());
