@@ -14,6 +14,7 @@ namespace Words2
     public struct Word : IEquatable<Word>, IComparable<Word>, IEnumerable<char>
     {
         public const char WildChar = '?';
+        public const char NullChar = '@';
         public const int MaxLength = 15;
 
         private readonly byte length;

@@ -203,25 +203,25 @@ namespace Words2
             private void MatchAnagramInner(Word input, int minLength, Word current, Action<Word> onMatch)
             {
                 HashSet<char> used = new HashSet<char>();
-                int wildCount = 0;
+                int nullCount = 0;
                 for (int i = 0; i < input.Length; ++i)
                 {
                     char c = input[i];
-                    if (c == Word.WildChar)
+                    if (c == Word.NullChar)
                     {
-                        ++wildCount;
+                        ++nullCount;
                     }
                     else if (used.Add(c))
                     {
                         Node child;
                         if (this.TryGetChild(c, out child))
                         {
-                            child.MatchAnagramInner(input.Replace(i, Word.WildChar), minLength, current.Append(c), onMatch);
+                            child.MatchAnagramInner(input.Replace(i, Word.NullChar), minLength, current.Append(c), onMatch);
                         }
                     }
                 }
 
-                if ((wildCount >= minLength) && this.IsLeaf)
+                if ((nullCount >= minLength) && this.IsLeaf)
                 {
                     onMatch(current);
                 }
