@@ -30,23 +30,19 @@ namespace Words2
         public bool Add(Word item)
         {
             Node current = this.root;
-            bool anyAdded = false;
+            bool isNew = false;
             for (int i = 0; i < item.Length; ++i)
             {
-                bool added = current.TryAddChild(item[i], out current);
-                if (added)
-                {
-                    anyAdded = true;
-                }
+                current.TryAddChild(item[i], out current);
             }
 
             if (!current.IsLeaf)
             {
-                anyAdded = true;
+                isNew = true;
                 current.IsLeaf = true;
             }
 
-            return anyAdded;
+            return isNew;
         }
 
         public bool Remove(Word item)

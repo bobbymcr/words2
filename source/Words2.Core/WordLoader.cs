@@ -16,7 +16,7 @@ namespace Words2
         {
             foreach (string s in line.Split(WhitespaceChars, StringSplitOptions.RemoveEmptyEntries))
             {
-                if (s.Length <= 15)
+                if (s.Length <= Word.MaxLength)
                 {
                     Word word = new Word(s);
                     onWordFound(word);
